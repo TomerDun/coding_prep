@@ -25,4 +25,32 @@ function contAvg(nums, k) {
 }
 
 
-console.log(contAvg([1,2,3,4,5,6,7,8,9], 1));
+function smallesContSum(nums, s) {
+    // Given an array of positive ints `nums` and a positive int `s` return the length of the smallest contigous subarray with sum greater then or equal to s
+    let winLeft = 0;
+    let winRight = 0;
+    let winSum = 0;
+    let smallestLenth = Infinity;
+
+    while (winRight < nums.length || winSum >= s) {
+        winSum += nums[winRight];
+        // if the window sum is to small move the right part
+        if (winSum < s) {
+            winRight++;
+        }
+        else { //window sum is >= to s
+            smallestLenth = winRight - winLeft + 1;
+            // try to shorten the array and see if the window sum is still >= s
+            winSum -= nums[winLeft]; //remove the left part of the window
+            winLeft++;
+            // remove the right part of the window from the sum to offset the next iteration where it will be added again
+            winSum -= nums[winRight];
+        }
+    }
+    if (smallestLenth === Infinity) return 0;
+    return smallestLenth;
+}
+
+console.log(smallesContSum([1,3,2,4,5], 6));
+console.log(smallesContSum([1,3,2,4,5], 12));
+console.log(smallesContSum([1,3,2,4,5], 22));
